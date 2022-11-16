@@ -1,5 +1,6 @@
 import express from 'express';
 import userRouter from './routes/userRouter.js';
+import propiedadesRouter from './routes/propiedadesRoutes.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import db from './config/db.js';
@@ -37,6 +38,7 @@ const app = express();
 //Routes
 
 app.use('/auth',userRouter);
+app.use('/',propiedadesRouter);
 
 
 
