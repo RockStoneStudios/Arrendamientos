@@ -18,7 +18,8 @@ export const autenticar = async (req,res)=> {
      if(!result.isEmpty()){
         return res.render('auth/login',{
             pagina : 'Iniciar Sesion',
-            errores : result.array()
+            errores : result.array(),
+            barra : false
         })
      }
       const {email,password} = req.body;
@@ -71,7 +72,8 @@ export const registrar = async (req,res)=>{
             usuario:{
                 nombre:req.body.nombre,
                 email: req.body.email
-            }
+            },
+            barra : false
         })
     }
      const {nombre,email,password} = req.body;
@@ -113,7 +115,8 @@ export const registrar = async (req,res)=>{
 export const formularioRegistro = async (req,res)=>{
     
     res.render('auth/registro',{
-        pagina : 'Crear Cuenta'
+        pagina : 'Crear Cuenta',
+        barra : false
     });
 
 
