@@ -5,7 +5,7 @@ import {Precio,Categoria,Propiedad} from '../models/index.js';
 export const admin = async(req,res)=>{
     res.render('propiedades/admin',{
         pagina : 'Mis Propiedades',
-        barra:true
+    
     })
 }
 
@@ -16,7 +16,7 @@ export const crear = async(req,res)=> {
         Categoria.findAll(),
         Precio.findAll()
     ]);
-    console.log(categorias,precios);
+   
     res.render('propiedades/crear',{
         pagina : 'Crear Propiedad',
         barra : true,
@@ -48,7 +48,6 @@ export const guardar = async(req,res) =>{
        ])
        return res.render('propiedades/crear',{
           pagina : 'Crear Propiedad',
-          barra : true,
           categorias,
           precios,
           errores : resultado.array(),
@@ -57,6 +56,9 @@ export const guardar = async(req,res) =>{
    }
    // Crear Propiedad
    const {titulo,descripcion,habitaciones,estacionamiento,wc,calle,lat,lng,precio,categoria} = req.body;
+    console.log('----hello----'+req.usuario);
+    const {id} = req.usuario;
+    console.log(req.usuario.id);
     try{
        const propiedad = await Propiedad.create({
           titulo,
@@ -68,9 +70,35 @@ export const guardar = async(req,res) =>{
           lat,
           lng,
           precioId : precio,
-          categoriaId : categoria
-       })
+          categoriaId : categoria,
+          usuarioId : req.usuario.id,
+          imagen:''
+       });
+       const {id} = propiedad;
+       res.redirect(`/propiedades/agregar-imagen/${id}`);
     }catch(error){
         console.log(error)
     }
+}
+
+
+export const agregarImagen = async(req,res)=>{
+    const {id} = req.params;
+    // Validar que la propiedad exista
+    const propiedad = await Propiedad.findByPk(id);
+    if(!propiedad){
+        return res.redirect('/mis-propiedades');
+    }
+    //Validar que la propiedad no este publicada
+    if(propiedad.publicado){
+        return res.redirect('/mis-propiedades');
+    }
+   // Validar que la propiedad pertenece a quien visita la pagina 
+    if(req.usuario.id.toString() !== propiedad.usuarioId.toString()){
+        return res.redirect('/mis-propiedades');
+    }
+
+    res.render('propiedades/agregar-imagen',{
+        pagina : 'Agregar Imagenes'
+    })
 }

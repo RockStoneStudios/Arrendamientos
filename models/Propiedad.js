@@ -15,7 +15,7 @@ Propiedad.init({
         type: DataTypes.STRING(80),
         allowNull : false
     },
-    description:{
+    descripcion:{
         type: DataTypes.TEXT,
         allowNull : false
     },

@@ -1,0 +1,28 @@
+extends ../layout/admin
+
+block styles
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.css")
+    
+    
+  
+
+block contenido
+    div.py-6
+        h1.text-3xl.mt-0.mb-5.font-extrabold.text-center Bienes 
+           span.font-normal Raices 
+        h2.text-center.text-3xl.font-extrabold=pagina
+        
+        
+       
+
+        div(class="bg-white shadow-md py-8 px-4 rounded-sm mx-auto max-w-4xl my-10 md:px-10")
+              
+
+               form.space-y-8(class="dropzone border-dashed border-2 w-full min:h-96 h-auto rounded flex-col justify-center items-center mb-5" action="/propiedades/crear" method="POST")
+                                       
+                                    
+                                                            
+               input(type="submit" ,class="w-full py-3 bg-indigo-600 hover:bg-indigo-800 rounded text-white font-bold uppercase cursor-pointer" value="Publicar Propiedad")        
+block scripts
+    script(src="/js/agregarImagen.js")
+    
