@@ -11,5 +11,17 @@ Dropzone.options.imagen = {
     addRemoveLinks : true,
     dictRemoveFile : 'Borrar Archivo',
     dictMaxFilesExceeded: 'El Limite es 5 archivos',
-    paramName : 'imagen'
+    paramName : 'imagen',
+    init: function(){
+       const dropzone = this;
+       const btnPublicar = document.querySelector('#publicar');
+       btnPublicar.addEventListener('click',function(){
+         dropzone.processQueue()
+       });
+       dropzone.on('queuecomplete',function(){
+          if(dropzone.getActiveFiles().length ==0){
+            window.location.href='/mis-propiedades'
+          }
+       })
+    }
 }
