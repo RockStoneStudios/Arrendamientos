@@ -4,7 +4,12 @@ import {Precio,Categoria,Propiedad} from '../models/index.js';
 import {unlink} from 'node:fs/promises'
 
 export const admin = async(req,res)=>{
+    const{pagina:paginaActual} = req.query;
     const {id} = req.usuario;
+    const expresion = /^[0-9]$/
+    if(!expresion.test(paginaActual)){
+       return res.redirect('/mis-propiedades?pagina=1');
+    }
     const propiedades = await Propiedad.findAll({where : {usuarioId : id},
       include: [
         {model : Categoria, as:'categoria'},
