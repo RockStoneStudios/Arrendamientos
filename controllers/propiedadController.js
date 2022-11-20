@@ -1,5 +1,6 @@
 import {validationResult,check} from 'express-validator';
 import {Precio,Categoria,Propiedad} from '../models/index.js';
+
 import {unlink} from 'node:fs/promises'
 
 export const admin = async(req,res)=>{
@@ -246,6 +247,31 @@ export const eliminar = async(req,res)=>{
     //Eliminar Propiedad
     await propiedad.destroy();
     res.redirect('/mis-propiedades');
+}
+
+
+export const mostrarPropiedad = async(req,res)=>{
+ 
+     const {id} = req.params;
+    console.log('--------------- ');
+    //Comprobar que las propiedad exista
+    const propiedades = await Propiedad.findAll({
+        include :[
+            {model : Precio},
+            {model : Categoria}
+        ]
+    });
+    
+    if(!propiedades){
+        
+        return res.redirect('/404'); 
+    }
+
+    const propiedad = propiedades.reduce(prop => prop.id===id);
+    res.render('propiedades/mostrar',{
+        propiedad,
+        pagina: propiedad.titulo
+    });
 }
 
 
