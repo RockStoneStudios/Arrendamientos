@@ -6,21 +6,47 @@ import {unlink} from 'node:fs/promises'
 export const admin = async(req,res)=>{
     const{pagina:paginaActual} = req.query;
     const {id} = req.usuario;
-    const expresion = /^[0-9]$/
+    const expresion = /^[1-9]$/
     if(!expresion.test(paginaActual)){
        return res.redirect('/mis-propiedades?pagina=1');
     }
-    const propiedades = await Propiedad.findAll({where : {usuarioId : id},
-      include: [
-        {model : Categoria, as:'categoria'},
-         {model : Precio}
-      ]
-    });
-
-    res.render('propiedades/admin',{
-        pagina : 'Mis Propiedades',
-        propiedades
-    })
+    try{
+        const limit = 10;
+        const offset = ((paginaActual*limit)-limit);
+        const [propiedades,total ]= await Promise.all([
+            await Propiedad.findAll({
+                    limit,
+                    offset,
+                    where : {
+                        usuarioId : id
+                    },
+                    include: [
+                      {model : Categoria, as:'categoria'},
+                      {model : Precio}
+                    ]
+                  }),
+                  Propiedad.count({
+                    where :{
+                         usuarioId :id
+                    }
+                  })
+        ]);
+       
+      
+          res.render('propiedades/admin',{
+              pagina : 'Mis Propiedades',
+              propiedades,
+              paginas : Math.ceil(total/limit),
+              paginaActual : Number(paginaActual),
+              offset,
+              limit,
+              total
+          });
+          console.log(total);
+    }catch(error){
+        console.log(error);
+    }
+    
 }
 
 

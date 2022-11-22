@@ -5,6 +5,16 @@ header.bg-indigo-600.p-4
 
 
         nav(class="my-5 text-sm md:flex md:items-center md:gap-3 font-bold text-white hidden")   
-           a(href="") Mis Propiedades  
-           a(href="") Mi Perfil 
-           a(class = "bg-indigo-800 py-2 px-10 rounded-lg" href="") Cerrar Sesion  
+           a(href="/auth/registro" class="mx-3") Crear Cuenta 
+           a(href="/auth/login") Iniciar Sesion
+
+
+div(class="bg-indigo-700 py-5 hidden lg:block")    
+    div(class="container mx-auto flex justify-around items-center")    
+        a(href="/categorias/1" class="text-sm font-bold uppercase text-white")  Casa
+        a(href="/categorias/2" class="text-sm font-bold uppercase text-white")   Apartamentos
+        a(href="/categorias/3" class="text-sm font-bold uppercase text-white")   Terreno
+        a(href="/categorias/4" class="text-sm font-bold uppercase text-white")   Cabaña
+        a(href="/categorias/5" class="text-sm font-bold uppercase text-white")   Finca
+
+            
