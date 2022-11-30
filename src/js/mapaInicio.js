@@ -23,9 +23,21 @@
      }
      const mostrarPropiedades = propiedades => {
         propiedades.map(propiedad => {
+             
              const marker = new L.marker([propiedad?.lat,propiedad?.lng],{
                  autoPan: true
-             }).addTo(mapa)
+
+             }).addTo(mapa).bindPopup(
+                `<p class="text-indigo-600 font-bold">${propiedad?.categoria.nombre}</p>
+                <h1 class = "text-xl font-extrabold uppercase my-5">
+                   ${propiedad?.titulo}
+                </h1>
+                <img src="/uploads/${propiedad?.imagen}" alt="titulo Imagen"/>
+                <p class="text-gray-600 font-bold">${propiedad?.Precio.nombre}</p>
+                 <a href="/propiedad/${propiedad.id}" class = "bg-indigo-600 block p-2 text-center font-bold text-white">Ver Propiedad</a>
+                `
+             )
+             markers.addLayer(marker)
         })
      }
      obtenerPropiedades()
