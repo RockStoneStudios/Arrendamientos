@@ -289,7 +289,7 @@ export const mostrarPropiedad = async(req,res)=>{
      const {id} = req.params;
     console.log('id:--------------- '+id);
    
-    const propiedad = await Propiedad.findOne({where : {id : uuidv4(id)}},{
+    const propiedad = await Propiedad.findByPk(id,{
         include :[
             {model : Precio},
             {model : Categoria}

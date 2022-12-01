@@ -1,4 +1,4 @@
-import {DataTypes,Model} from 'sequelize';
+import {DataTypes,INTEGER,Model} from 'sequelize';
 import sequelize from '../config/db.js';
 
 
@@ -6,8 +6,8 @@ class Propiedad extends Model {}
 
 Propiedad.init({
     id:{
-        type: DataTypes.UUID,
-        defaultValue : DataTypes.UUIDV4,
+        type:INTEGER,
+        autoIncrement : true,
         allowNull : false,
         primaryKey : true
     },

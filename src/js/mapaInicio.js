@@ -6,6 +6,30 @@
      
      let markers = new L.FeatureGroup().addTo(mapa);
 
+       let propiedades = [];
+     
+     const filtros = {
+      categoria: '',
+      precio : ''
+   }
+
+     const categoriasSelect = document.querySelector('#categorias');
+     const precioSelect = document.querySelector('#precios');
+
+    //Filtrado de categorias y precios
+    categoriasSelect.addEventListener('change', e=> {
+        console.log(e.target.value)
+        filtros.categoria = +e.target.value;
+        filtrarPropiedades();
+    });
+
+    precioSelect.addEventListener('change', e=> {
+      console.log(e.target.value)
+      filtros.precio = +e.target.value;
+      filtrarPropiedades();
+    })
+
+
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(mapa);
@@ -13,7 +37,7 @@
          try{
             const url = '/api/propiedades'
              const res = await fetch(url);
-             const propiedades = await res.json();
+              propiedades = await res.json();
              console.log(propiedades);
              mostrarPropiedades(propiedades.propiedades);
 
@@ -22,6 +46,8 @@
          }
      }
      const mostrarPropiedades = propiedades => {
+        // Limpiar markers
+        markers.clearLayers();
         propiedades.map(propiedad => {
              
              const marker = new L.marker([propiedad?.lat,propiedad?.lng],{
@@ -39,6 +65,18 @@
              )
              markers.addLayer(marker)
         })
+     }
+     const filtrarPropiedades = () =>{
+       const resultados = propiedades.propiedades.filter(filtrarCategoria).filter(filtrarPrecio);
+       mostrarPropiedades(resultados);
+     }
+
+     const filtrarCategoria = propiedad =>{
+         return filtros.categoria ? propiedad.categoriaId === filtros.categoria : propiedad;
+     }
+
+     const filtrarPrecio = propiedad => {
+       return filtros.precio ? propiedad.precioId === filtros.precio : propiedad;
      }
      obtenerPropiedades()
 })()
