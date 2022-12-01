@@ -287,6 +287,7 @@ export const eliminar = async(req,res)=>{
 export const mostrarPropiedad = async(req,res)=>{
  
      const {id} = req.params;
+     
     console.log('id:--------------- '+id);
    
     const propiedad = await Propiedad.findByPk(id,{
@@ -302,7 +303,9 @@ export const mostrarPropiedad = async(req,res)=>{
     //  console.log('propiedad-------',propiedad);
      res.render('propiedades/mostrar',{
          propiedad,
-         pagina: propiedad.titulo
+         pagina: propiedad.titulo,
+         usuario : req.usuario
+
         });
         if(!propiedad){
             

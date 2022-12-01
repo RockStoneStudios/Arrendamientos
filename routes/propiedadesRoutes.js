@@ -3,6 +3,7 @@ import {admin,crear,guardar,agregarImagen,mostrarPropiedad,almacenarImagen,edita
 import {protegerRuta} from '../middleware/protegeRouta.js'
 import { body } from 'express-validator';
 import upload from '../middleware/subirImagen.js';
+import { identificarUsuario } from '../middleware/UsuarioAutenticado.js';
 const router = Router();
 
 
@@ -16,6 +17,7 @@ router.get('/propiedades/editar/:id',protegerRuta,editar);
 router.post('/propiedades/editar/:id',protegerRuta,guardarEdicion);
 router.post('/propiedades/eliminar/:id',protegerRuta,eliminar)
 
-router.get('/propiedad/:id',mostrarPropiedad);
+//Area publica
+router.get('/propiedad/:id',identificarUsuario,mostrarPropiedad);
 
 export default router;
