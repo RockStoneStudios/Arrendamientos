@@ -1,5 +1,7 @@
 import {Router} from 'express';
-import {admin,crear,guardar,agregarImagen,mostrarPropiedad,almacenarImagen,editar,guardarEdicion,eliminar} from '../controllers/propiedadController.js';
+import {admin,crear,guardar,agregarImagen,mostrarPropiedad,almacenarImagen,
+    editar,guardarEdicion,eliminar,
+    enviarMensaje,verMensajes} from '../controllers/propiedadController.js';
 import {protegerRuta} from '../middleware/protegeRouta.js'
 import { body } from 'express-validator';
 import upload from '../middleware/subirImagen.js';
@@ -19,5 +21,11 @@ router.post('/propiedades/eliminar/:id',protegerRuta,eliminar)
 
 //Area publica
 router.get('/propiedad/:id',identificarUsuario,mostrarPropiedad);
+
+//Mensajes
+
+router.post('/propiedad/:id',identificarUsuario,enviarMensaje);
+
+router.get('/mensajes/:id',protegerRuta,verMensajes)
 
 export default router;

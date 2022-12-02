@@ -39,13 +39,31 @@ block contenido
             div(class="p-5")
                 p(class="text-gray-600 font-bold text-xs") Direccion 
                     span(id="calle" class="text-gray-600 block text-lg")= propiedad.calle  
-                h3(class="text-2xl text-center font-bold text-slate-800 text-ellipsis mb-3") Vendedor    
-                if !usuario 
-                    div(class=" flex flex-col justify-center items-center gap-2")
-                        p(class="text-center") Si Deseas contactar al arrendador 
-                        a(class="text-indigo-700 font-medium" href="/auth/registro") Debes Crear una cuenta    
-                else 
-                    p Usuario puede enviar mensaje
+                if !esVendedor    
+                    h3(class="text-2xl text-center font-bold text-slate-800 text-ellipsis mb-3") Vendedor 
+                    if enviado 
+                        p(class="p-2 text-center bg-green-600 uppercase font-semibold text-white rounded-md") Mensaje enviado Correctamente
+                  
+                    else if usuario 
+                        if errores 
+                            div(class="max-w-md mx-auto my-10")
+                                each error in errores 
+                                    p(class="bg-red-600 text-white text-sm text-center p-2 font-bold")=error.msg 
+                        form(method="POST")
+                            div(class="space-y-5")
+                                label(for="mensaje" class="font-medium uppercase text-indigo-400") Mensaje 
+                                textarea(name= "mensaje" class="w-full py-2 border border-gray-300 rounded-lg shadow-md placeholder-gray-500" placeholder="Escribele a el arrendador") 
+                                input(type="submit" value="Enviar Mensaje" 
+                                class="bg-indigo-600 text-white font-bold uppercase text-sm w-full p-2 cursor-pointer" )
+                        
+                    else 
+                        div(class=" flex flex-col justify-center items-center gap-2")
+                            p(class="text-center") Si Deseas contactar al arrendador 
+                            a(class="text-indigo-700 font-medium" href="/auth/registro") Debes Crear una cuenta      
+                    
+                       
+                        
+
 
 block scripts 
     script(src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js")       

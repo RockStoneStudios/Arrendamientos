@@ -1,7 +1,8 @@
 import {validationResult,check} from 'express-validator';
-import {Precio,Categoria,Propiedad} from '../models/index.js';
+import {Precio,Categoria,Propiedad,Mensaje, Usuario} from '../models/index.js';
 import {v4 as uuidv4, v4} from 'uuid';
 import {unlink} from 'node:fs/promises'
+import {esVendedor} from '../helpers/index.js'
 
 
 
@@ -25,7 +26,8 @@ export const admin = async(req,res)=>{
                     },
                     include: [
                       {model : Categoria, as:'categoria'},
-                      {model : Precio}
+                      {model : Precio},
+                      {model : Mensaje}
                     ]
                   }),
                   Propiedad.count({
@@ -35,7 +37,7 @@ export const admin = async(req,res)=>{
                   })
         ]);
        
-      
+        
           res.render('propiedades/admin',{
               pagina : 'Mis Propiedades',
               propiedades,
@@ -304,8 +306,8 @@ export const mostrarPropiedad = async(req,res)=>{
      res.render('propiedades/mostrar',{
          propiedad,
          pagina: propiedad.titulo,
-         usuario : req.usuario
-
+         usuario : req.usuario,
+         esVendedor : esVendedor(req.usuario?.id,propiedad.usuarioId)
         });
         if(!propiedad){
             
@@ -313,7 +315,64 @@ export const mostrarPropiedad = async(req,res)=>{
         }
 }
 
+export const enviarMensaje = async (req,res)=>{ 
+     check('mensaje').isLength({min : 10}).withMessage('El mensaje no puede ir vacio o es muy corto').run(req);
+     const {id} = req.params;
+     const propiedad = await Propiedad.findByPk(id,{
+        include:[
+             {model : Precio},
+             {model : Categoria}
+        ]
+     });
+     
+     if(!propiedad){
+        return res.redirect('/404')
+     }
+       let resultado = validationResult(req);
+    
+       if(!resultado.isEmpty()){
+        return  res.render('propiedades/mostrar',{
+            propiedad,
+            pagina: propiedad.titulo,
+            usuario : req.usuario,
+            esVendedor : esVendedor(req.usuario?.id,propiedad.usuarioId),
+            errores : resultado.array()
+        });
+       }
+       const {mensaje} = req.body;
+       const {id : propiedadId} = req.params;
+       const {id:usuarioId} = req.usuario;
+     // Almacenar el modelo
+     await Mensaje.create({
+        mensaje,
+        propiedadId,
+        usuarioId
+     })
+ 
+      res.redirect('/');
+}
 
+//Leer mensajes recicbidos 
+
+export const verMensajes = async(req,res)=>{
+    const {id} = req.params;
+    const propiedad = await Propiedad.findByPk(id,{
+        include:[
+            {model:Mensaje,
+            
+             include:[{model : Usuario}]
+            }
+        ]
+    });
+    if(!propiedad){
+        return res.redirect('/mis-propiedades')
+    }
+
+    res.render('propiedades/mensajes',{
+        pagina : 'Mensajes',
+        mensajes: propiedad.Mensajes
+    })
+}
 
 
 
