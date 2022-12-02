@@ -12,14 +12,14 @@ block contenido
            
             ul
                 each mensaje in mensajes
-                    li(class="border-gray-300 border-b p-5")
+                    li(class="border-gray-300 mb-2 border-b-2 p-5")
                         p(class="font-bold text-gray-700") Nombre: 
                             span(class="font-medium")= mensaje.Usuario.nombre
                         p(class="font-bold text-gray-700") Email: 
                             span(class="font-medium")= mensaje.Usuario.email    
                         p(class="font-bold text-gray-700") Mensaje
                             span(class="font-medium")= mensaje.mensaje 
-                        p(class="font-bold text-gray-700") Enviado
-                            span(class="font-medium")= mensaje.createdAt     
+                        p(class="font-bold text-gray-700") Enviado: 
+                            span(class="font-medium")= formatearFecha(mensaje.createdAt)     
         else 
             p(class="text-center text-gray-600 p-5 font-medium") No hay Mensajes    

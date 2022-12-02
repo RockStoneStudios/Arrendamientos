@@ -1,8 +1,10 @@
 import {validationResult,check} from 'express-validator';
 import {Precio,Categoria,Propiedad,Mensaje, Usuario} from '../models/index.js';
 import {v4 as uuidv4, v4} from 'uuid';
-import {unlink} from 'node:fs/promises'
-import {esVendedor} from '../helpers/index.js'
+import {unlink} from 'node:fs/promises';
+import {esVendedor} from '../helpers/index.js';
+import {formatearFecha} from '../helpers/index.js'
+
 
 
 
@@ -370,7 +372,8 @@ export const verMensajes = async(req,res)=>{
 
     res.render('propiedades/mensajes',{
         pagina : 'Mensajes',
-        mensajes: propiedad.Mensajes
+        mensajes: propiedad.Mensajes,
+        formatearFecha
     })
 }
 

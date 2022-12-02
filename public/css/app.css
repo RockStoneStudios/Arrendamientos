@@ -562,6 +562,9 @@ video {
 .mt-2 {
   margin-top: 0.5rem;
 }
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
 .block {
   display: block;
 }
@@ -718,6 +721,9 @@ video {
 }
 .border-b {
   border-bottom-width: 1px;
+}
+.border-b-2 {
+  border-bottom-width: 2px;
 }
 .border-dashed {
   border-style: dashed;
