@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { formularioLogin,confirmarCuenta,nuevoPassword,
     comprobarToken,resetPassword,formularioRegistro,registrar,
-    formularioOlvidePassword,autenticar } 
+    formularioOlvidePassword,autenticar,cerrarSesion } 
     from "../controllers/usuarioController.js";
 
 const router = Router();
@@ -10,6 +10,7 @@ const router = Router();
 router.get('/login',formularioLogin);
 router.post('/login',autenticar);
 
+router.post('/cerrar-sesion',cerrarSesion)
 
 //Registro
 router.post('/registro',registrar);

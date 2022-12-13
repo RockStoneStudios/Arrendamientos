@@ -243,3 +243,6 @@ export const confirmarCuenta = async (req,res)=> {
 
 
 
+export const cerrarSesion = async(req,res)=>{
+    return res.clearCookie('_token').status(200).redirect('/auth/login');
+}

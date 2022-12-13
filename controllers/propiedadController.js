@@ -287,6 +287,19 @@ export const eliminar = async(req,res)=>{
     res.redirect('/mis-propiedades');
 }
 
+//Modificar estado
+
+export const cambiarEstado = async (req,res)=>{
+    const {id} = req.params;
+    const propiedad = await Propiedad.findByPk(id);
+    if(!propiedad) return res.redirect('/mis-propiedades');
+
+    propiedad.publicado = !propiedad.publicado;
+    await propiedad.save();
+    res.json({
+        resultado : 'ok'
+    })
+}
 
 export const mostrarPropiedad = async(req,res)=>{
  
@@ -299,7 +312,10 @@ export const mostrarPropiedad = async(req,res)=>{
             {model : Precio},
             {model : Categoria}
         ]});
-    
+        if(!propiedad || !propiedad.publicado){
+            
+            return res.redirect('/404'); 
+        }
    
    console.log(propiedad);
      
@@ -311,10 +327,7 @@ export const mostrarPropiedad = async(req,res)=>{
          usuario : req.usuario,
          esVendedor : esVendedor(req.usuario?.id,propiedad.usuarioId)
         });
-        if(!propiedad){
-            
-            return res.redirect('/404'); 
-        }
+       
 }
 
 export const enviarMensaje = async (req,res)=>{ 
