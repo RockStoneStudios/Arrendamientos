@@ -46,7 +46,7 @@ app.use('/api',apiRouter);
 
 
 
-app.listen(process.env.PORT,()=>{
+app.listen(process.env.PORT || 3001,()=>{
     console.log(`Starting Server on Port --> ${process.env.PORT}`);
 });
 
