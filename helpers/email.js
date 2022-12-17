@@ -6,6 +6,7 @@ dotenv.config();
 export const emailRegistro = async(datos)=>{
     var transport = nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
+      service : 'gmail',
       port: process.env.EMAIL_PORT,
       auth: {
         user: process.env.EMAIL_USER,
